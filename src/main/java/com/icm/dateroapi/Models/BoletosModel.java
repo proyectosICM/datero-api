@@ -9,17 +9,18 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Data
 @Entity
-@Table(name = "Rutas")
-public class RutasModel {
+@Table(name = "Boletos")
+public class BoletosModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
     private Long id;
     private String nombre;
-    private Boolean estado;
-    @ManyToOne
-    @JoinColumn(name = "empresa", referencedColumnName = "id", nullable = false)
-    private EmpresasModel empresasModel;
+    private String valor;
+    private Integer conteo;
 
+    @ManyToOne
+    @JoinColumn(name = "ruta", referencedColumnName = "id", nullable = false)
+    private RutasModel rutasModel;
 
 }
