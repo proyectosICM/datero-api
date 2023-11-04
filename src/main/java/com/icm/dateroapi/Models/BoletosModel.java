@@ -23,4 +23,8 @@ public class BoletosModel {
     @JoinColumn(name = "ruta", referencedColumnName = "id", nullable = false)
     private RutasModel rutasModel;
 
+    @ManyToOne
+    @JoinColumn(name = "empresa", referencedColumnName = "id", nullable = false)
+    private EmpresasModel empresasModel;
+
 }

@@ -23,4 +23,12 @@ public class ConteoBoletosModel {
     @JoinColumn(name = "boletos", referencedColumnName = "id", nullable = false)
     private BoletosModel boletosModel;
 
+    @ManyToOne
+    @JoinColumn(name = "buses", referencedColumnName = "id", nullable = false)
+    private BusesModel busesModel;
+
+    @ManyToOne
+    @JoinColumn(name = "empresa", referencedColumnName = "id", nullable = false)
+    private EmpresasModel empresasModel;
+
 }
