@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -27,6 +26,6 @@ public class TiempoRutaModel {
     private BusesModel busesModel;
 
     @ManyToOne
-        @JoinColumn(name = "paradero", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "paradero", referencedColumnName = "id", nullable = false)
     private ParaderosModel paraderosModel;
 }

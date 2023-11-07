@@ -16,16 +16,16 @@ import java.util.Optional;
 @RequestMapping("api/empresas")
 public class EmpresasController {
     @Autowired
-    EmpresasService empresasService;
+    private EmpresasService empresasService;
 
     @GetMapping
     public List<EmpresasModel> GetAllE(){
-        return empresasService.GetAll();
+        return empresasService.getAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<EmpresasModel> GetEID(@PathVariable Long id){
-        Optional<EmpresasModel> empresa = empresasService.GetById(id);
+        Optional<EmpresasModel> empresa = empresasService.getById(id);
         if (empresa.isPresent()){
             return new ResponseEntity<>(empresa.get(), HttpStatus.OK);
         } else {
@@ -39,13 +39,13 @@ public class EmpresasController {
 
     @PostMapping
     public ResponseEntity<EmpresasModel> CrearE(@RequestBody EmpresasModel empresasModel){
-        EmpresasModel cempresa = empresasService.CreateEmpresa(empresasModel);
+        EmpresasModel cempresa = empresasService.createEmpresa(empresasModel);
         return new ResponseEntity<>(cempresa, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<EmpresasModel> EditarE(@RequestBody EmpresasModel empresasModel, @PathVariable Long id){
-        EmpresasModel eempresa = empresasService.EditEmpresa(empresasModel, id);
+        EmpresasModel eempresa = empresasService.editEmpresa(empresasModel, id);
         if (eempresa!=null){
             return new ResponseEntity<>(eempresa, HttpStatus.OK);
         } else {
@@ -55,7 +55,7 @@ public class EmpresasController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<EmpresasModel> EliminarE(@PathVariable Long id){
-        empresasService.DeleteEmpresa(id);
+        empresasService.deleteEmpresa(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

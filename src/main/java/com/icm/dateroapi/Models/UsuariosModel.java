@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,7 +18,6 @@ public class UsuariosModel {
     private String apellido;
     private String dni;
     private Boolean estado;
-
     private String username;
     private String password;
 
@@ -30,5 +28,4 @@ public class UsuariosModel {
     @ManyToOne
     @JoinColumn(name = "empresa", referencedColumnName = "id", nullable = false)
     private  EmpresasModel empresasModel;
-
 }

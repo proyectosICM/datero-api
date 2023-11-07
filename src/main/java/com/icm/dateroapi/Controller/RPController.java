@@ -15,16 +15,16 @@ import java.util.Optional;
 @RequestMapping("api/rp")
 public class RPController {
     @Autowired
-    RPService rpService;
+    private RPService rpService;
 
     @GetMapping
     public List<RPModel> ListarRP(){
-        return rpService.ListarRP();
+        return rpService.listarRP();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<RPModel> ListarRPId(@PathVariable Long id){
-        Optional<RPModel> rp = rpService.ListarRPXID(id);
+        Optional<RPModel> rp = rpService.listarRPXID(id);
         if (rp.isPresent()){
             return new ResponseEntity<>(rp.get(), HttpStatus.OK);
         }
@@ -38,13 +38,13 @@ public class RPController {
 
     @PostMapping
     public ResponseEntity<RPModel> CrearRP(@RequestBody RPModel rpModel){
-        RPModel crp = rpService.CrearRP(rpModel);
+        RPModel crp = rpService.crearRP(rpModel);
         return new ResponseEntity<>(crp, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<RPModel> EditarRP(@RequestBody RPModel rpModel, @PathVariable Long id){
-        RPModel erp = rpService.EditarRP(rpModel, id);
+        RPModel erp = rpService.editarRP(rpModel, id);
         if (erp!=null){
             return new ResponseEntity<>(erp, HttpStatus.OK);
         }
@@ -53,9 +53,7 @@ public class RPController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<RPModel> EliminarRP(@PathVariable Long id){
-        rpService.EliminarRP(id);
+        rpService.eliminarRP(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
-
 }

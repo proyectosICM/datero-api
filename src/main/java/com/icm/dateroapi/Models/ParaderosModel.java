@@ -4,9 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.math.BigDecimal;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -18,6 +16,7 @@ public class ParaderosModel {
     @Column(unique = true, nullable = false)
     private Long id;
     private String nombre;
+    private Boolean estado;
 
     @Column(precision = 20, scale = 15)
     private BigDecimal longitud;
@@ -25,10 +24,7 @@ public class ParaderosModel {
     @Column(precision = 20, scale = 15)
     private BigDecimal  latitud;
 
-    private Boolean estado;
-
     @ManyToOne
     @JoinColumn(name = "distrito", referencedColumnName = "id", nullable = false)
     private DistritosModel distritosModel;
-
 }

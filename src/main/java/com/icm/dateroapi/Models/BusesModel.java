@@ -4,9 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.math.BigDecimal;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -19,8 +17,10 @@ public class BusesModel {
     private Long id;
     private String modelo;
     private String placa;
+
     @Column(precision = 20, scale = 15)
     private BigDecimal longitud;
+
     @Column(precision = 20, scale = 15)
     private BigDecimal  latitud;
     private Boolean estado;

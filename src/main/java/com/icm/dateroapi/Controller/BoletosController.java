@@ -16,16 +16,16 @@ import java.util.Optional;
 @RequestMapping("api/boletos")
 public class BoletosController {
     @Autowired
-    BoletosService boletosService;
+    private BoletosService boletosService;
 
     @GetMapping
     public List<BoletosModel> GetAll(){
-        return boletosService.GetAll();
+        return boletosService.getAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<BoletosModel> GetBId(@PathVariable Long id){
-        Optional<BoletosModel> boleto = boletosService.GetById(id);
+        Optional<BoletosModel> boleto = boletosService.getById(id);
         if (boleto.isPresent()){
             return new ResponseEntity<>(boleto.get(), HttpStatus.OK);
         }
@@ -34,17 +34,17 @@ public class BoletosController {
 
     @GetMapping("/xempresaAndRuta/{empresaid}/{ruta}")
     public List<BoletosModel> GetxEmpresaAndEstado(@PathVariable Long empresaid, @PathVariable Long ruta){
-        return boletosService.getByEmpresaandRuta(empresaid, ruta);
+        return boletosService.getByEmpresaAndRuta(empresaid, ruta);
     }
 
     @PostMapping
     public ResponseEntity<BoletosModel> CrearB(@RequestBody BoletosModel boletosModel){
-        BoletosModel cboleto = boletosService.CreateBoleto(boletosModel);
+        BoletosModel cboleto = boletosService.createBoleto(boletosModel);
         return new ResponseEntity<>(cboleto, HttpStatus.CREATED);
     }
     @PutMapping("/{id}")
     public ResponseEntity<BoletosModel> EditarB(@RequestBody BoletosModel boletosModel, @PathVariable Long id){
-        BoletosModel eboleto = boletosService.EditBoleto(boletosModel, id);
+        BoletosModel eboleto = boletosService.editBoleto(boletosModel, id);
         if (eboleto!=null){
             return new ResponseEntity<>(eboleto, HttpStatus.OK);
         }
@@ -53,7 +53,7 @@ public class BoletosController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<BoletosModel> EliminarB(@PathVariable Long id){
-        boletosService.DeleteBoleto(id);
+        boletosService.deleteBoleto(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

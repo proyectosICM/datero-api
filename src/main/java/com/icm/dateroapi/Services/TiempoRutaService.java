@@ -12,21 +12,21 @@ import java.util.Optional;
 @Service
 public class TiempoRutaService {
     @Autowired
-    TiempoRutaRepository tiempoRutaRepository;
+    private TiempoRutaRepository tiempoRutaRepository;
 
-    public List<TiempoRutaModel> GetAll(){
+    public List<TiempoRutaModel> getAll(){
         return tiempoRutaRepository.findAll();
     }
 
-    public Optional<TiempoRutaModel> GetById(Long id){
+    public Optional<TiempoRutaModel> getById(Long id){
         return tiempoRutaRepository.findById(id);
     }
 
-    public TiempoRutaModel CreateTiempoRuta(TiempoRutaModel tiemporutaModel){
+    public TiempoRutaModel createTiempoRuta(TiempoRutaModel tiemporutaModel){
         return tiempoRutaRepository.save(tiemporutaModel);
     }
 
-    public TiempoRutaModel EditTiempoRuta(TiempoRutaModel tiemporutaModel, Long id){
+    public TiempoRutaModel editTiempoRuta(TiempoRutaModel tiemporutaModel, Long id){
         Optional<TiempoRutaModel> existing = tiempoRutaRepository.findById(id);
         if (existing.isPresent()){
             TiempoRutaModel tiemporuta = existing.get();
@@ -40,7 +40,7 @@ public class TiempoRutaService {
         return null;
     }
 
-    public void DeleteTiempoRuta(Long id){
+    public void deleteTiempoRuta(Long id){
         tiempoRutaRepository.deleteById(id);
     }
 }

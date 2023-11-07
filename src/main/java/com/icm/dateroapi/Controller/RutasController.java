@@ -15,16 +15,16 @@ import java.util.Optional;
 @RequestMapping("api/rutas")
 public class RutasController {
     @Autowired
-    RutasService rutasService;
+    private RutasService rutasService;
 
     @GetMapping
     public List<RutasModel> GetAll(){
-        return rutasService.GetAll();
+        return rutasService.getAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<RutasModel> GetRId(@PathVariable Long id){
-        Optional<RutasModel> rutas = rutasService.GetById(id);
+        Optional<RutasModel> rutas = rutasService.getById(id);
         if (rutas.isPresent()){
             return new ResponseEntity<>(rutas.get(), HttpStatus.OK);
         }
@@ -42,12 +42,12 @@ public class RutasController {
 
     @PostMapping
     public ResponseEntity<RutasModel> CrearR(@RequestBody RutasModel rutasModel){
-        RutasModel crutas = rutasService.CreateRuta(rutasModel);
+        RutasModel crutas = rutasService.createRuta(rutasModel);
         return new ResponseEntity<>(crutas, HttpStatus.CREATED);
     }
     @PutMapping("/{id}")
     public ResponseEntity<RutasModel> EditarR(@RequestBody RutasModel rutasModel, @PathVariable Long id){
-        RutasModel eruta = rutasService.EditRuta(rutasModel, id);
+        RutasModel eruta = rutasService.editRuta(rutasModel, id);
         if (eruta!=null){
             return new ResponseEntity<>(eruta, HttpStatus.OK);
         }
@@ -56,7 +56,7 @@ public class RutasController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<RutasModel> EliminarR(@PathVariable Long id){
-        rutasService.DeleteRuta(id);
+        rutasService.deleteRuta(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

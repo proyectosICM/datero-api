@@ -1,6 +1,5 @@
 package com.icm.dateroapi.Controller;
 
-import com.icm.dateroapi.Models.RutasModel;
 import com.icm.dateroapi.Models.TiempoRutaModel;
 import com.icm.dateroapi.Services.TiempoRutaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,16 +14,16 @@ import java.util.Optional;
 @RequestMapping("api/tiemporuta")
 public class TiempoRutaController {
     @Autowired
-    TiempoRutaService tiempoRutaService;
+    private TiempoRutaService tiempoRutaService;
 
     @GetMapping
     public List<TiempoRutaModel> GetAll(){
-        return tiempoRutaService.GetAll();
+        return tiempoRutaService.getAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<TiempoRutaModel> GetTRId(@PathVariable Long id){
-        Optional<TiempoRutaModel> rutas = tiempoRutaService.GetById(id);
+        Optional<TiempoRutaModel> rutas = tiempoRutaService.getById(id);
         if (rutas.isPresent()){
             return new ResponseEntity<>(rutas.get(), HttpStatus.OK);
         }
@@ -33,12 +32,12 @@ public class TiempoRutaController {
 
     @PostMapping
     public ResponseEntity<TiempoRutaModel> CrearTR(@RequestBody TiempoRutaModel tiempoRutaModel){
-        TiempoRutaModel ctiemporuta = tiempoRutaService.CreateTiempoRuta(tiempoRutaModel);
+        TiempoRutaModel ctiemporuta = tiempoRutaService.createTiempoRuta(tiempoRutaModel);
         return new ResponseEntity<>(ctiemporuta, HttpStatus.CREATED);
     }
     @PutMapping("/{id}")
     public ResponseEntity<TiempoRutaModel> EditarTR(@RequestBody TiempoRutaModel tiempoRutaModel, @PathVariable Long id){
-        TiempoRutaModel etiemporuta = tiempoRutaService.EditTiempoRuta(tiempoRutaModel, id);
+        TiempoRutaModel etiemporuta = tiempoRutaService.editTiempoRuta(tiempoRutaModel, id);
         if (etiemporuta!=null){
             return new ResponseEntity<>(etiemporuta, HttpStatus.OK);
         }
@@ -47,7 +46,7 @@ public class TiempoRutaController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<TiempoRutaModel> EliminarTR(@PathVariable Long id){
-        tiempoRutaService.DeleteTiempoRuta(id);
+        tiempoRutaService.deleteTiempoRuta(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

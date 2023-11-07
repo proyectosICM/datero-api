@@ -12,13 +12,13 @@ import java.util.Optional;
 @Service
 public class UsuariosService {
     @Autowired
-    UsuariosRepository usuariosRepository;
+    private UsuariosRepository usuariosRepository;
 
-    public List<UsuariosModel> GetAll(){
+    public List<UsuariosModel> getAll(){
         return usuariosRepository.findAll();
     }
 
-    public Optional<UsuariosModel> GetById(Long id){
+    public Optional<UsuariosModel> getById(Long id){
         return usuariosRepository.findById(id);
     }
     public List<UsuariosModel> getByEmpresa(Long empresaid) {
@@ -29,11 +29,11 @@ public class UsuariosService {
         return usuariosRepository.findByEmpresasModelIdAndEstado(empresaid, estado);
     }
 
-    public UsuariosModel CreateUsuario(UsuariosModel trabajadoresModel){
+    public UsuariosModel createUsuario(UsuariosModel trabajadoresModel){
         return usuariosRepository.save(trabajadoresModel);
     }
 
-    public UsuariosModel EditUsuario(UsuariosModel trabajadoresModel, Long id){
+    public UsuariosModel editUsuario(UsuariosModel trabajadoresModel, Long id){
         Optional<UsuariosModel> existing = usuariosRepository.findById(id);
         if (existing.isPresent()){
             UsuariosModel trabajador = existing.get();
@@ -49,7 +49,7 @@ public class UsuariosService {
         return null;
     }
 
-    public void DeleteUsuario(Long id){
+    public void deleteUsuario(Long id){
         usuariosRepository.deleteById(id);
     }
 }

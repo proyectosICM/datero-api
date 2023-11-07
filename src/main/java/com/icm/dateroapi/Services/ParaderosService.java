@@ -12,13 +12,13 @@ import java.util.Optional;
 @Service
 public class ParaderosService {
     @Autowired
-    ParaderosRepository paraderosRepository;
+    private ParaderosRepository paraderosRepository;
 
-    public List<ParaderosModel> GetAll(){
+    public List<ParaderosModel> getAll(){
         return paraderosRepository.findAll();
     }
 
-    public Optional<ParaderosModel> GetById(Long id){
+    public Optional<ParaderosModel> getById(Long id){
         return paraderosRepository.findById(id);
     }
 
@@ -31,11 +31,11 @@ public class ParaderosService {
     }
     */
 
-    public ParaderosModel CreateParaderos(ParaderosModel paraderosModel){
+    public ParaderosModel createParaderos(ParaderosModel paraderosModel){
         return paraderosRepository.save(paraderosModel);
     }
 
-    public ParaderosModel EditParaderos(ParaderosModel paraderosModel, Long id){
+    public ParaderosModel editParaderos(ParaderosModel paraderosModel, Long id){
         Optional<ParaderosModel> existing = paraderosRepository.findById(id);
         if (existing.isPresent()){
             ParaderosModel paraderos = existing.get();
@@ -50,7 +50,7 @@ public class ParaderosService {
         }
     }
 
-    public void DeleteParadero(Long id){
+    public void deleteParadero(Long id){
         paraderosRepository.deleteById(id);
     }
 }

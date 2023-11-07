@@ -14,16 +14,16 @@ import java.util.Optional;
 @RequestMapping("api/buses")
 public class BusesController {
     @Autowired
-    BusesService busesService;
+    private BusesService busesService;
 
     @GetMapping
     public List<BusesModel> GetAll(){
-        return busesService.GetAll();
+        return busesService.getAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<BusesModel> GetAllId(@PathVariable Long id){
-        Optional<BusesModel> buses = busesService.GetById(id);
+        Optional<BusesModel> buses = busesService.getById(id);
         if (buses.isPresent()){
             return new ResponseEntity<>(buses.get(), HttpStatus.OK);
         }
@@ -42,13 +42,13 @@ public class BusesController {
 
     @PostMapping
     public ResponseEntity<BusesModel> CrearB(@RequestBody BusesModel busesModel){
-        BusesModel cbus = busesService.CreateBus(busesModel);
+        BusesModel cbus = busesService.createBus(busesModel);
         return new ResponseEntity<>(cbus,HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<BusesModel> EditarB(@RequestBody BusesModel busesModel, @PathVariable Long id){
-        BusesModel ebus = busesService.EditBus(busesModel, id);
+        BusesModel ebus = busesService.editBus(busesModel, id);
         if (ebus!=null){
             return new ResponseEntity<>(ebus, HttpStatus.OK);
         }
@@ -57,7 +57,7 @@ public class BusesController {
 
     @PutMapping("pos/{id}")
     public ResponseEntity<BusesModel> EditarPos(@RequestBody BusesModel busesModel, @PathVariable Long id){
-        BusesModel ebus = busesService.EditarPosicionamiento(busesModel, id);
+        BusesModel ebus = busesService.editarPosicionamiento(busesModel, id);
         if (ebus!=null){
             return new ResponseEntity<>(ebus, HttpStatus.OK);
         }
@@ -66,7 +66,7 @@ public class BusesController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<BusesModel> EliminarB(@PathVariable Long id){
-        busesService.DeleteBus(id);
+        busesService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

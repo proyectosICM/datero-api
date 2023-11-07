@@ -16,16 +16,16 @@ import java.util.Optional;
 @RequestMapping("api/paraderos")
 public class ParaderosController {
     @Autowired
-    ParaderosService paraderosService;
+    private ParaderosService paraderosService;
 
     @GetMapping
     public List<ParaderosModel> ListarP(){
-        return paraderosService.GetAll();
+        return paraderosService.getAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ParaderosModel> ListarPId(@PathVariable Long id){
-        Optional<ParaderosModel> paraderos = paraderosService.GetById(id);
+        Optional<ParaderosModel> paraderos = paraderosService.getById(id);
         if (paraderos.isPresent()){
             return new ResponseEntity<>(paraderos.get(), HttpStatus.OK);
         } else {
@@ -46,13 +46,13 @@ public class ParaderosController {
 
     @PostMapping
     public ResponseEntity<ParaderosModel> CrearE(@RequestBody ParaderosModel paraderosModel){
-        ParaderosModel cparaderos = paraderosService.CreateParaderos(paraderosModel);
+        ParaderosModel cparaderos = paraderosService.createParaderos(paraderosModel);
         return new ResponseEntity<>(cparaderos, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ParaderosModel> EditarE(@RequestBody ParaderosModel paraderosModel, @PathVariable Long id){
-        ParaderosModel eparaderos = paraderosService.EditParaderos(paraderosModel, id);
+        ParaderosModel eparaderos = paraderosService.editParaderos(paraderosModel, id);
         if (eparaderos!=null){
             return new ResponseEntity<>(eparaderos, HttpStatus.OK);
         } else {
@@ -62,7 +62,7 @@ public class ParaderosController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ParaderosModel> EliminarE(@PathVariable Long id){
-        paraderosService.DeleteParadero(id);
+        paraderosService.deleteParadero(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

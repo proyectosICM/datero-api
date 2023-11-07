@@ -1,6 +1,5 @@
 package com.icm.dateroapi.Services;
 
-import com.icm.dateroapi.Models.BusesModel;
 import com.icm.dateroapi.Models.RPModel;
 import com.icm.dateroapi.Repositories.RPRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +11,13 @@ import java.util.Optional;
 @Service
 public class RPService {
     @Autowired
-    RPRepository rpRepository;
+    private RPRepository rpRepository;
 
-    public List<RPModel> ListarRP(){
+    public List<RPModel> listarRP(){
         return rpRepository.findAll();
     }
 
-    public Optional<RPModel> ListarRPXID(Long id){
+    public Optional<RPModel> listarRPXID(Long id){
         return rpRepository.findById(id);
     }
 
@@ -26,11 +25,11 @@ public class RPService {
         return rpRepository.findByRutasModelId(rutaid);
     }
 
-    public RPModel CrearRP(RPModel rpModel){
+    public RPModel crearRP(RPModel rpModel){
         return rpRepository.save(rpModel);
     }
 
-    public RPModel EditarRP(RPModel rpModel, Long id){
+    public RPModel editarRP(RPModel rpModel, Long id){
         Optional<RPModel> existing = rpRepository.findById(id);
         if (existing.isPresent()){
             RPModel rp = existing.get();
@@ -43,7 +42,7 @@ public class RPService {
         return null;
     }
 
-    public void EliminarRP(Long id){
+    public void eliminarRP(Long id){
         rpRepository.deleteById(id);
     }
 }

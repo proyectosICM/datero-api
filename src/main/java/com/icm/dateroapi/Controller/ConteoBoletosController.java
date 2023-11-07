@@ -16,16 +16,16 @@ import java.util.Optional;
 @RequestMapping("api/conteoB")
 public class ConteoBoletosController {
     @Autowired
-    ConteoBoletosService conteoBoletosService;
+    private ConteoBoletosService conteoBoletosService;
 
     @GetMapping
-    public List<ConteoBoletosModel> GetAllCB(){
-        return conteoBoletosService.GetAll();
+    public List<ConteoBoletosModel> getAllCB(){
+        return conteoBoletosService.getAll();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ConteoBoletosModel> GetCBId(@PathVariable Long id){
-        Optional<ConteoBoletosModel> conteoB = conteoBoletosService.GetById(id);
+    public ResponseEntity<ConteoBoletosModel> getCBId(@PathVariable Long id){
+        Optional<ConteoBoletosModel> conteoB = conteoBoletosService.getById(id);
         if(conteoB.isPresent()){
             return new ResponseEntity<>(conteoB.get(), HttpStatus.OK);
         }
@@ -38,19 +38,19 @@ public class ConteoBoletosController {
     }
 
     @PostMapping
-    public ResponseEntity<ConteoBoletosModel> CrearCB(@RequestBody ConteoBoletosModel conteoBoletosModel){
-        ConteoBoletosModel conteoB = conteoBoletosService.CreateConteoB(conteoBoletosModel);
+    public ResponseEntity<ConteoBoletosModel> crearCB(@RequestBody ConteoBoletosModel conteoBoletosModel){
+        ConteoBoletosModel conteoB = conteoBoletosService.createConteoB(conteoBoletosModel);
         return new ResponseEntity<>(conteoB, HttpStatus.CREATED);
     }
 
     @PostMapping("/aumentar")
     public ConteoBoletosModel aumentarBoleto(@RequestBody ConteoBoletosModel conteoBoletosModel) {
-        return conteoBoletosService.AumentarBoleto(conteoBoletosModel);
+        return conteoBoletosService.aumentarBoleto(conteoBoletosModel);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ConteoBoletosModel> EditarCV(@RequestBody ConteoBoletosModel conteoBoletosModel, @PathVariable Long id){
-        ConteoBoletosModel edistrito = conteoBoletosService.EditConteoB(conteoBoletosModel, id);
+    public ResponseEntity<ConteoBoletosModel> editarCV(@RequestBody ConteoBoletosModel conteoBoletosModel, @PathVariable Long id){
+        ConteoBoletosModel edistrito = conteoBoletosService.editConteoB(conteoBoletosModel, id);
         if (edistrito!=null){
             return new ResponseEntity<>(edistrito, HttpStatus.OK);
         }
@@ -58,10 +58,8 @@ public class ConteoBoletosController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ConteoBoletosModel> EliminarCB(@PathVariable Long id){
-        conteoBoletosService.DeleteById(id);
+    public ResponseEntity<ConteoBoletosModel> eliminarCB(@PathVariable Long id){
+        conteoBoletosService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
-
 }

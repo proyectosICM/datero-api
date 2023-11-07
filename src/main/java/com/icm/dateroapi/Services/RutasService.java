@@ -12,13 +12,13 @@ import java.util.Optional;
 @Service
 public class RutasService {
     @Autowired
-    RutasRepository rutasRepository;
+    private RutasRepository rutasRepository;
 
 
-    public List<RutasModel> GetAll(){
+    public List<RutasModel> getAll(){
         return rutasRepository.findAll();
     }
-    public Optional<RutasModel> GetById(Long id){
+    public Optional<RutasModel> getById(Long id){
         return rutasRepository.findById(id);
     }
     public List<RutasModel> getByEmpresa(Long empresaid) {
@@ -27,11 +27,11 @@ public class RutasService {
     public List<RutasModel> getByEmpresaAndEstado(Long empresaid, Boolean estado) {
         return rutasRepository.findByEmpresasModelIdAndEstado(empresaid, estado);
     }
-    public RutasModel CreateRuta(RutasModel rutasModel){
+    public RutasModel createRuta(RutasModel rutasModel){
         return rutasRepository.save(rutasModel);
     }
 
-    public RutasModel EditRuta(RutasModel rutasModel, Long id){
+    public RutasModel editRuta(RutasModel rutasModel, Long id){
         Optional<RutasModel> existing = rutasRepository.findById(id);
         if(existing.isPresent()){
             RutasModel rutas = existing.get();
@@ -42,7 +42,7 @@ public class RutasService {
         return null;
     }
 
-    public void DeleteRuta(Long id){
+    public void deleteRuta(Long id){
         rutasRepository.deleteById(id);
     }
 

@@ -19,6 +19,13 @@ public class RegistroRutaModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
     private Long id;
+    private LocalDate dia;
+
+    @Temporal(TemporalType.TIME)
+    private Time horaEsperada;
+
+    @Temporal(TemporalType.TIME)
+    private Time  horaLlegada;
 
     @ManyToOne
     @JoinColumn(name = "empresa", referencedColumnName = "id", nullable = false)
@@ -35,16 +42,4 @@ public class RegistroRutaModel {
     @ManyToOne
     @JoinColumn(name = "paradero", referencedColumnName = "id", nullable = false)
     private ParaderosModel paraderosModel;
-
-    @Temporal(TemporalType.TIME)
-    private Time horaEsperada;
-
-    @Temporal(TemporalType.TIME)
-
-    private Time  horaLlegada;
-
-    private LocalDate dia;
-
-
-
 }

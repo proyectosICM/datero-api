@@ -15,16 +15,16 @@ import java.util.Optional;
 @RequestMapping("api/usuarios")
 public class UsuariosController {
     @Autowired
-    UsuariosService usuariosService;
+    private UsuariosService usuariosService;
 
     @GetMapping
     public List<UsuariosModel> GetAllT(){
-        return usuariosService.GetAll();
+        return usuariosService.getAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<UsuariosModel> GetAllTID(@PathVariable Long id){
-        Optional<UsuariosModel> trabajador = usuariosService.GetById(id);
+        Optional<UsuariosModel> trabajador = usuariosService.getById(id);
         if (trabajador!=null){
             return new ResponseEntity<>(trabajador.get(), HttpStatus.OK);
         }
@@ -43,13 +43,13 @@ public class UsuariosController {
 
     @PostMapping
     public ResponseEntity<UsuariosModel> CrearT(@RequestBody UsuariosModel trabajadoresModel){
-        UsuariosModel ctrabajador = usuariosService.CreateUsuario(trabajadoresModel);
+        UsuariosModel ctrabajador = usuariosService.createUsuario(trabajadoresModel);
         return new ResponseEntity<>(ctrabajador, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<UsuariosModel> EditarT(@RequestBody UsuariosModel trabajadoresModel, @PathVariable Long id){
-        UsuariosModel etrabajador = usuariosService.EditUsuario(trabajadoresModel, id);
+        UsuariosModel etrabajador = usuariosService.editUsuario(trabajadoresModel, id);
         if (etrabajador!=null){
             return new ResponseEntity<>(etrabajador, HttpStatus.OK);
         }
@@ -58,7 +58,7 @@ public class UsuariosController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<UsuariosModel> EliminarT(@PathVariable Long id){
-        usuariosService.DeleteUsuario(id);
+        usuariosService.deleteUsuario(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

@@ -16,16 +16,16 @@ import java.util.Optional;
 @RequestMapping("api/registroRuta")
 public class RegistroRutaController {
     @Autowired
-    RegistroRutaService registroRutaService;
+    private RegistroRutaService registroRutaService;
 
     @GetMapping
     public List<RegistroRutaModel> GetAllCB(){
-        return registroRutaService.GetAll();
+        return registroRutaService.getAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<RegistroRutaModel> GetRBId(@PathVariable Long id){
-        Optional<RegistroRutaModel> conteoB = registroRutaService.GetById(id);
+        Optional<RegistroRutaModel> conteoB = registroRutaService.getById(id);
         if(conteoB.isPresent()){
             return new ResponseEntity<>(conteoB.get(), HttpStatus.OK);
         }
@@ -47,13 +47,13 @@ public class RegistroRutaController {
 
     @PostMapping
     public ResponseEntity<RegistroRutaModel> CrearRR(@RequestBody RegistroRutaModel registroRutaModel){
-        RegistroRutaModel RR = registroRutaService.CreateRegistroRuta(registroRutaModel);
+        RegistroRutaModel RR = registroRutaService.createRegistroRuta(registroRutaModel);
         return new ResponseEntity<>(RR, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<RegistroRutaModel> EditarRR(@RequestBody RegistroRutaModel registroRutaModel, @PathVariable Long id){
-        RegistroRutaModel eRR = registroRutaService.EditRegistroRuta(registroRutaModel, id);
+        RegistroRutaModel eRR = registroRutaService.editRegistroRuta(registroRutaModel, id);
         if (eRR!=null){
             return new ResponseEntity<>(eRR, HttpStatus.OK);
         }
@@ -62,7 +62,7 @@ public class RegistroRutaController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<RegistroRutaModel> EliminarRR(@PathVariable Long id){
-        registroRutaService.DeleteRegistroRuta(id);
+        registroRutaService.deleteRegistroRuta(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

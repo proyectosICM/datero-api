@@ -12,23 +12,23 @@ import java.util.Optional;
 @Service
 public class DistritosService {
     @Autowired
-    DistritosRepository distritosRepository;
+    private DistritosRepository distritosRepository;
 
-    public List<DistritosModel> GetAll(){
+    public List<DistritosModel> getAll(){
         return distritosRepository.findAll();
     }
 
-    public Optional<DistritosModel> GetById(Long id){
+    public Optional<DistritosModel> getById(Long id){
         return distritosRepository.findById(id);
     }
     public List<DistritosModel> getByEstado(Boolean estado) {
         return distritosRepository.findByEstado(estado);
     }
-    public DistritosModel CreateDistrito(DistritosModel distritosModel){
+    public DistritosModel createDistrito(DistritosModel distritosModel){
         return distritosRepository.save(distritosModel);
     }
 
-    public DistritosModel EditDistrito(DistritosModel distritosModel, Long id){
+    public DistritosModel editDistrito(DistritosModel distritosModel, Long id){
         Optional<DistritosModel> existing = distritosRepository.findById(id);
         if (existing.isPresent()){
             DistritosModel distrito = existing.get();
@@ -40,7 +40,7 @@ public class DistritosService {
         }
     }
 
-    public void DeleteById(Long id){
+    public void deleteById(Long id){
         distritosRepository.deleteById(id);
     }
 }

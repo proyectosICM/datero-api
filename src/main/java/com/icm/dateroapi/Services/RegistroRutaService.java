@@ -18,16 +18,16 @@ import java.util.Optional;
 @Service
 public class RegistroRutaService {
     @Autowired
-    RegistroRutaRepository registroRutaRepository;
+    private RegistroRutaRepository registroRutaRepository;
 
     @Autowired
     private EntityManager entityManager;
 
-    public List<RegistroRutaModel> GetAll(){
+    public List<RegistroRutaModel> getAll(){
         return registroRutaRepository.findAll();
     }
 
-    public Optional<RegistroRutaModel> GetById(Long id){
+    public Optional<RegistroRutaModel> getById(Long id){
         return registroRutaRepository.findById(id);
     }
 
@@ -53,7 +53,7 @@ public class RegistroRutaService {
         return fechaActualPeru;
     }
 
-    public RegistroRutaModel CreateRegistroRuta(RegistroRutaModel paraderosModel){
+    public RegistroRutaModel createRegistroRuta(RegistroRutaModel paraderosModel){
         return registroRutaRepository.save(paraderosModel);
     }
 
@@ -84,7 +84,7 @@ public class RegistroRutaService {
         nuevoregistro.setDia(obtenerFechaActualPeru());
         nuevoregistro.setHoraLlegada(horaLlegada);
         nuevoregistro.setHoraEsperada(horaLlegada);
-        return CreateRegistroRuta(nuevoregistro);
+        return createRegistroRuta(nuevoregistro);
     }
 
     /*
@@ -93,7 +93,7 @@ public class RegistroRutaService {
         }
         */
 
-    public RegistroRutaModel EditRegistroRuta(RegistroRutaModel paraderosModel, Long id){
+    public RegistroRutaModel editRegistroRuta(RegistroRutaModel paraderosModel, Long id){
         Optional<RegistroRutaModel> existing = registroRutaRepository.findById(id);
         if (existing.isPresent()){
             RegistroRutaModel registro = existing.get();
@@ -109,7 +109,7 @@ public class RegistroRutaService {
         }
     }
 
-    public void DeleteRegistroRuta(Long id){
+    public void deleteRegistroRuta(Long id){
         registroRutaRepository.deleteById(id);
     }
 }

@@ -1,7 +1,6 @@
 package com.icm.dateroapi.Services;
 
 import com.icm.dateroapi.Models.BoletosModel;
-import com.icm.dateroapi.Models.BusesModel;
 import com.icm.dateroapi.Repositories.BoletosRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,36 +11,37 @@ import java.util.Optional;
 @Service
 public class BoletosService {
     @Autowired
-    BoletosRepository boletosRepository;
-    public List<BoletosModel> GetAll(){
+    private BoletosRepository boletosRepository;
+
+    public List<BoletosModel> getAll() {
         return boletosRepository.findAll();
     }
 
-    public Optional<BoletosModel> GetById(Long id){
+    public Optional<BoletosModel> getById(Long id) {
         return boletosRepository.findById(id);
     }
-    public List<BoletosModel> getByEmpresaandRuta(Long empresaid, Long rutaid) {
-        return boletosRepository.findByEmpresasModelIdAndRutasModelId(empresaid, rutaid);
+
+    public List<BoletosModel> getByEmpresaAndRuta(Long empresaId, Long rutaId) {
+        return boletosRepository.findByEmpresasModelIdAndRutasModelId(empresaId, rutaId);
     }
 
-    public BoletosModel CreateBoleto(BoletosModel busesModel){
-        return boletosRepository.save(busesModel);
+    public BoletosModel createBoleto(BoletosModel boleto) {
+        return boletosRepository.save(boleto);
     }
 
-    public BoletosModel EditBoleto(BoletosModel boletosModel, Long id){
+    public BoletosModel editBoleto(BoletosModel boleto, Long id) {
         Optional<BoletosModel> existing = boletosRepository.findById(id);
-        if (existing.isPresent()){
-            BoletosModel boleto = existing.get();
-            boleto.setNombre(boletosModel.getNombre());
-            boleto.setValor(boletosModel.getValor());
-            boleto.setRutasModel(boletosModel.getRutasModel());
-
-            return boletosRepository.save(boleto);
+        if (existing.isPresent()) {
+            BoletosModel existingBoleto = existing.get();
+            existingBoleto.setNombre(boleto.getNombre());
+            existingBoleto.setValor(boleto.getValor());
+            existingBoleto.setRutasModel(boleto.getRutasModel());
+            return boletosRepository.save(existingBoleto);
         }
         return null;
     }
 
-    public void DeleteBoleto(Long id){
+    public void deleteBoleto(Long id) {
         boletosRepository.deleteById(id);
     }
 }

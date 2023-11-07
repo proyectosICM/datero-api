@@ -16,17 +16,17 @@ import java.util.Optional;
 @RequestMapping("api/roles")
 public class RolesController {
     @Autowired
-    RolesService rolesService;
+    private RolesService rolesService;
 
     @GetMapping
     public ResponseEntity<List<RolesModel>> listarRoles() {
-        List<RolesModel> roles = rolesService.GetAll();
+        List<RolesModel> roles = rolesService.getAll();
         return new ResponseEntity<>(roles, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<RolesModel> listarRolPorId(@PathVariable("id") Long id) {
-        Optional<RolesModel> rol = rolesService.GetById(id);
+        Optional<RolesModel> rol = rolesService.getById(id);
         if (rol.isPresent()) {
             return new ResponseEntity<>(rol.get(), HttpStatus.OK);
         }
@@ -40,13 +40,13 @@ public class RolesController {
 
     @PostMapping
     public ResponseEntity<RolesModel> crearRol(@RequestBody RolesModel rolesModel) {
-        RolesModel nuevoRol = rolesService.CreateRoles(rolesModel);
+        RolesModel nuevoRol = rolesService.createRoles(rolesModel);
         return new ResponseEntity<>(nuevoRol, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<RolesModel> editarRol(@RequestBody RolesModel rolesModel, @PathVariable("id") Long id) {
-        RolesModel rolEditado = rolesService.EditRoles(rolesModel, id);
+        RolesModel rolEditado = rolesService.editRoles(rolesModel, id);
         if (rolEditado != null) {
             return new ResponseEntity<>(rolEditado, HttpStatus.OK);
         }
@@ -55,7 +55,7 @@ public class RolesController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarRol(@PathVariable("id") Long id) {
-        rolesService.DeleteRoles(id);
+        rolesService.deleteRoles(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

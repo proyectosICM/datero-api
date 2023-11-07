@@ -17,16 +17,15 @@ import java.util.stream.Collectors;
 @Service
 public class ConteoBoletosService {
     @Autowired
-    ConteoBoletosRepository conteoBoletosRepository;
-
+    private ConteoBoletosRepository conteoBoletosRepository;
     @Autowired
     private EntityManager entityManager;
 
-    public List<ConteoBoletosModel> GetAll(){
+    public List<ConteoBoletosModel> getAll(){
         return conteoBoletosRepository.findAll();
     }
 
-    public Optional<ConteoBoletosModel> GetById(Long id){
+    public Optional<ConteoBoletosModel> getById(Long id){
         return conteoBoletosRepository.findById(id);
     }
 
@@ -41,29 +40,41 @@ public class ConteoBoletosService {
         );
         query.setParameter("busId", busId);
         query.setParameter("fechaActualPeru", fechaActualPeru);
-
         return query.getResultList();
     }
 
     private LocalDate obtenerFechaActualPeru() {
-        // Establece la zona horaria de Perú (UTC-5)
         ZoneId zonaPeru = ZoneId.of("America/Lima");
-
-        // Obtiene la fecha y hora actual en la zona horaria de Perú
         ZonedDateTime fechaHoraPeru = ZonedDateTime.now(zonaPeru);
-
-        // Extrae la fecha de la fecha y hora actual
         LocalDate fechaActualPeru = fechaHoraPeru.toLocalDate();
-
         return fechaActualPeru;
     }
 
-    public ConteoBoletosModel AumentarBoleto(ConteoBoletosModel conteoBoletosModel) {
+    public ConteoBoletosModel aumentarBoleto(ConteoBoletosModel conteoBoletosModel) {
         Long busId = conteoBoletosModel.getBusesModel().getId();
         Long boletoId = conteoBoletosModel.getBoletosModel().getId();
-        // Obtén la lista de registros para el día actual y el bus específico
         List<ConteoBoletosModel> registros = obtenerConteoPorBusIdYFechaActual(busId);
 
+        ConteoBoletosModel nuevoRegistro;
+
+        if (registros.isEmpty()) {
+            nuevoRegistro = crearNuevoRegistro(conteoBoletosModel, busId, boletoId);
+        } else {
+            List<ConteoBoletosModel> registrosFiltrados = registros.stream()
+                    .filter(registro -> registro.getBoletosModel().getId().equals(boletoId))
+                    .collect(Collectors.toList());
+
+            if (registrosFiltrados.isEmpty()) {
+                nuevoRegistro = crearNuevoRegistro(conteoBoletosModel, busId, boletoId);
+            } else {
+                nuevoRegistro = actualizarRegistroExistente(registrosFiltrados.get(0), conteoBoletosModel);
+            }
+        }
+
+        return nuevoRegistro;
+    }
+
+    private ConteoBoletosModel crearNuevoRegistro(ConteoBoletosModel conteoBoletosModel, Long busId, Long boletoId) {
         BusesModel bus = new BusesModel();
         bus.setId(busId);
 
@@ -71,50 +82,31 @@ public class ConteoBoletosService {
         empresa.setId(conteoBoletosModel.getEmpresasModel().getId());
 
         BoletosModel boleto = new BoletosModel();
-        boleto.setId(conteoBoletosModel.getBoletosModel().getId());
+        boleto.setId(boletoId);
 
-        if (registros.isEmpty()) {
-            // No hay registros para el día actual, crea uno nuevo
-            ConteoBoletosModel nuevoRegistro = new ConteoBoletosModel();
-            nuevoRegistro.setBusesModel(bus);
-            nuevoRegistro.setEmpresasModel(empresa);
-            nuevoRegistro.setBoletosModel(boleto);
-            nuevoRegistro.setDia(obtenerFechaActualPeru());
-            nuevoRegistro.setConteo(1);
-            nuevoRegistro.setTotalAcumulado(conteoBoletosModel.getTotalAcumulado());
-            return CreateConteoB(nuevoRegistro);
-        } else {
-            // Ya existe un registro para el día actual y el bus específico
-            // Filtra la lista de registros por el ID del boleto
-            List<ConteoBoletosModel> registrosFiltrados = registros.stream()
-                    .filter(registro -> registro.getBoletosModel().getId().equals(boletoId))
-                    .collect(Collectors.toList());
+        ConteoBoletosModel nuevoRegistro = new ConteoBoletosModel();
+        nuevoRegistro.setBusesModel(bus);
+        nuevoRegistro.setEmpresasModel(empresa);
+        nuevoRegistro.setBoletosModel(boleto);
+        nuevoRegistro.setDia(obtenerFechaActualPeru());
+        nuevoRegistro.setConteo(1);
+        nuevoRegistro.setTotalAcumulado(conteoBoletosModel.getTotalAcumulado());
 
-            if (registrosFiltrados.isEmpty()) {
-                // No existe un registro para el boleto específico, crea uno nuevo
-                ConteoBoletosModel nuevoRegistro = new ConteoBoletosModel();
-                nuevoRegistro.setBusesModel(bus);
-                nuevoRegistro.setEmpresasModel(empresa);
-                nuevoRegistro.setBoletosModel(boleto);
-                nuevoRegistro.setDia(obtenerFechaActualPeru());
-                nuevoRegistro.setConteo(1); // Inicializa el conteo en 1
-                nuevoRegistro.setTotalAcumulado(conteoBoletosModel.getTotalAcumulado());
-                return CreateConteoB(nuevoRegistro);
-            } else {
-                // Ya existe un registro para el boleto específico, aumenta el boleto en el registro existente
-                ConteoBoletosModel registroExistente = registrosFiltrados.get(0);
-                int nuevoConteo = registroExistente.getConteo() + 1;
-                registroExistente.setConteo(nuevoConteo);
-                registroExistente.setTotalAcumulado(registroExistente.getTotalAcumulado() + conteoBoletosModel.getTotalAcumulado());
-                return EditConteoB(registroExistente, registroExistente.getId());
-            }
-        }
+        return createConteoB(nuevoRegistro);
     }
-    public ConteoBoletosModel CreateConteoB(ConteoBoletosModel conteoBoletosModel){
+
+    private ConteoBoletosModel actualizarRegistroExistente(ConteoBoletosModel registroExistente, ConteoBoletosModel conteoBoletosModel) {
+        int nuevoConteo = registroExistente.getConteo() + 1;
+        registroExistente.setConteo(nuevoConteo);
+        registroExistente.setTotalAcumulado(registroExistente.getTotalAcumulado() + conteoBoletosModel.getTotalAcumulado());
+        return editConteoB(registroExistente, registroExistente.getId());
+    }
+
+    public ConteoBoletosModel createConteoB(ConteoBoletosModel conteoBoletosModel){
         return conteoBoletosRepository.save(conteoBoletosModel);
     }
 
-    public ConteoBoletosModel EditConteoB(ConteoBoletosModel conteoBoletosModel, Long id){
+    public ConteoBoletosModel editConteoB(ConteoBoletosModel conteoBoletosModel, Long id){
         Optional<ConteoBoletosModel> existing = conteoBoletosRepository.findById(id);
         if (existing.isPresent()){
             ConteoBoletosModel conteoB = existing.get();
@@ -127,7 +119,7 @@ public class ConteoBoletosService {
         }
     }
 
-    public void DeleteById(Long id){
+    public void deleteById(Long id){
         conteoBoletosRepository.deleteById(id);
     }
 }

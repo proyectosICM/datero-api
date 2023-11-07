@@ -25,5 +25,4 @@ public class BoletosModel {
     @ManyToOne
     @JoinColumn(name = "empresa", referencedColumnName = "id", nullable = false)
     private EmpresasModel empresasModel;
-
 }

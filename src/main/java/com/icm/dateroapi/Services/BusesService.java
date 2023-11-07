@@ -1,7 +1,6 @@
 package com.icm.dateroapi.Services;
 
 import com.icm.dateroapi.Models.BusesModel;
-import com.icm.dateroapi.Models.EmpresasModel;
 import com.icm.dateroapi.Repositories.BusesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,12 +11,13 @@ import java.util.Optional;
 @Service
 public class BusesService {
     @Autowired
-    BusesRepository busesRepository;
-    public List<BusesModel> GetAll(){
+    private BusesRepository busesRepository;
+
+    public List<BusesModel> getAll() {
         return busesRepository.findAll();
     }
 
-    public Optional<BusesModel> GetById(Long id){
+    public Optional<BusesModel> getById(Long id) {
         return busesRepository.findById(id);
     }
 
@@ -29,11 +29,10 @@ public class BusesService {
         return busesRepository.findByEmpresasModelIdAndEstado(empresaid, estado);
     }
 
-    public BusesModel CreateBus(BusesModel busesModel){
+    public BusesModel createBus(BusesModel busesModel) {
         return busesRepository.save(busesModel);
     }
-
-    public BusesModel EditBus(BusesModel busesModel, Long id){
+    public BusesModel editBus(BusesModel busesModel, Long id){
         Optional<BusesModel> existing = busesRepository.findById(id);
         if (existing.isPresent()){
             BusesModel bus = existing.get();
@@ -47,8 +46,7 @@ public class BusesService {
         }
         return null;
     }
-
-    public BusesModel EditarPosicionamiento(BusesModel busesModel, Long id){
+    public BusesModel editarPosicionamiento(BusesModel busesModel, Long id){
         Optional<BusesModel> existing = busesRepository.findById(id);
         if (existing.isPresent()){
             BusesModel bus = existing.get();
@@ -59,7 +57,7 @@ public class BusesService {
         return null;
     }
 
-    public void DeleteBus(Long id){
+    public void deleteById(Long id) {
         busesRepository.deleteById(id);
     }
 }

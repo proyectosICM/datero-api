@@ -1,7 +1,5 @@
 package com.icm.dateroapi.Controller;
 
-
-import com.icm.dateroapi.Models.BusesModel;
 import com.icm.dateroapi.Models.DistritosModel;
 import com.icm.dateroapi.Services.DistritosService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,16 +14,16 @@ import java.util.Optional;
 @RequestMapping("api/distritos")
 public class DistritosController {
     @Autowired
-    DistritosService distritosService;
+    private DistritosService distritosService;
 
     @GetMapping
     public List<DistritosModel> GetAllD(){
-        return distritosService.GetAll();
+        return distritosService.getAll();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<DistritosModel> GetDId(@PathVariable Long id){
-        Optional<DistritosModel> distrito = distritosService.GetById(id);
+        Optional<DistritosModel> distrito = distritosService.getById(id);
         if(distrito.isPresent()){
             return new ResponseEntity<>(distrito.get(), HttpStatus.OK);
         }
@@ -39,13 +37,13 @@ public class DistritosController {
 
     @PostMapping
     public ResponseEntity<DistritosModel> CrearD(@RequestBody DistritosModel distritosModel){
-        DistritosModel cdistrito = distritosService.CreateDistrito(distritosModel);
+        DistritosModel cdistrito = distritosService.createDistrito(distritosModel);
         return new ResponseEntity<>(cdistrito, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<DistritosModel> EditarD(@RequestBody DistritosModel distritosModel, @PathVariable Long id){
-        DistritosModel edistrito = distritosService.EditDistrito(distritosModel, id);
+        DistritosModel edistrito = distritosService.editDistrito(distritosModel, id);
         if (edistrito!=null){
             return new ResponseEntity<>(edistrito, HttpStatus.OK);
         }
@@ -54,9 +52,7 @@ public class DistritosController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<DistritosModel> EliminarD(@PathVariable Long id){
-        distritosService.DeleteById(id);
+        distritosService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
-
 }
