@@ -1,0 +1,31 @@
+http://localhost:8080/api/conteoB/aumentar
+
+{
+    "boletosModel": {
+        "id": 2
+    },
+    "empresasModel": {
+        "id": 19
+    },
+    "busesModel": {
+        "id": 1
+    }
+}
+
+
+http://localhost:8080/api/registroRuta/agregarPasoRuta
+
+{
+    "empresasModel": {
+        "id": 19
+    },
+    "rutasModel": {
+        "id": 2
+    },
+    "busesModel": {
+        "id": 1
+    },
+    "paraderosModel": {
+        "id": 1
+    }
+}

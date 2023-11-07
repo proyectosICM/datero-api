@@ -16,7 +16,12 @@ public class ConteoBoletosModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
     private Long id;
+
     private Integer conteo;
+
+    @Column(nullable = true)
+    private Double totalAcumulado;
+
     private LocalDate dia;
 
     @ManyToOne
@@ -30,5 +35,7 @@ public class ConteoBoletosModel {
     @ManyToOne
     @JoinColumn(name = "empresa", referencedColumnName = "id", nullable = false)
     private EmpresasModel empresasModel;
+
+
 
 }

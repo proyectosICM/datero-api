@@ -1,6 +1,7 @@
 package com.icm.dateroapi.Controller;
 
 import com.icm.dateroapi.Models.BoletosModel;
+import com.icm.dateroapi.Models.BusesModel;
 import com.icm.dateroapi.Models.TiempoRutaModel;
 import com.icm.dateroapi.Services.BoletosService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,11 @@ public class BoletosController {
             return new ResponseEntity<>(boleto.get(), HttpStatus.OK);
         }
         return null;
+    }
+
+    @GetMapping("/xempresaAndRuta/{empresaid}/{ruta}")
+    public List<BoletosModel> GetxEmpresaAndEstado(@PathVariable Long empresaid, @PathVariable Long ruta){
+        return boletosService.getByEmpresaandRuta(empresaid, ruta);
     }
 
     @PostMapping

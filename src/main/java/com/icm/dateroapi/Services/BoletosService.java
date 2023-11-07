@@ -1,6 +1,7 @@
 package com.icm.dateroapi.Services;
 
 import com.icm.dateroapi.Models.BoletosModel;
+import com.icm.dateroapi.Models.BusesModel;
 import com.icm.dateroapi.Repositories.BoletosRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,9 @@ public class BoletosService {
     public Optional<BoletosModel> GetById(Long id){
         return boletosRepository.findById(id);
     }
+    public List<BoletosModel> getByEmpresaandRuta(Long empresaid, Long rutaid) {
+        return boletosRepository.findByEmpresasModelIdAndRutasModelId(empresaid, rutaid);
+    }
 
     public BoletosModel CreateBoleto(BoletosModel busesModel){
         return boletosRepository.save(busesModel);
@@ -31,7 +35,6 @@ public class BoletosService {
             boleto.setNombre(boletosModel.getNombre());
             boleto.setValor(boletosModel.getValor());
             boleto.setRutasModel(boletosModel.getRutasModel());
-            boleto.setConteo(boletosModel.getConteo());
 
             return boletosRepository.save(boleto);
         }

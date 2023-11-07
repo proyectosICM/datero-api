@@ -17,7 +17,6 @@ public class BoletosModel {
     private Long id;
     private String nombre;
     private String valor;
-    private Integer conteo;
 
     @ManyToOne
     @JoinColumn(name = "ruta", referencedColumnName = "id", nullable = false)

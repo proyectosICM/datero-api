@@ -32,10 +32,20 @@ public class ConteoBoletosController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    @GetMapping("/conteoPorBusYFechaActual/{bus}")
+    public List<ConteoBoletosModel> obtenerConteoPorBusIdYFechaActual(@PathVariable Long bus) {
+        return conteoBoletosService.obtenerConteoPorBusIdYFechaActual(bus);
+    }
+
     @PostMapping
     public ResponseEntity<ConteoBoletosModel> CrearCB(@RequestBody ConteoBoletosModel conteoBoletosModel){
         ConteoBoletosModel conteoB = conteoBoletosService.CreateConteoB(conteoBoletosModel);
         return new ResponseEntity<>(conteoB, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/aumentar")
+    public ConteoBoletosModel aumentarBoleto(@RequestBody ConteoBoletosModel conteoBoletosModel) {
+        return conteoBoletosService.AumentarBoleto(conteoBoletosModel);
     }
 
     @PutMapping("/{id}")
