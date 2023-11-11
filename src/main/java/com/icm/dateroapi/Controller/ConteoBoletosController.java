@@ -2,6 +2,7 @@ package com.icm.dateroapi.Controller;
 
 import com.icm.dateroapi.Models.ConteoBoletosModel;
 import com.icm.dateroapi.Models.DistritosModel;
+
 import com.icm.dateroapi.Services.ConteoBoletosService;
 import com.icm.dateroapi.Services.DistritosService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -30,6 +32,21 @@ public class ConteoBoletosController {
             return new ResponseEntity<>(conteoB.get(), HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/last-7-days")
+    public List<ConteoBoletosModel> findLast7DaysRecords() {
+        return conteoBoletosService.findLast7DaysRecords();
+    }
+
+    @GetMapping("/last-7-days-ordered/{busId}")
+    public List<Map<String, Object>> getLast7DaysRecordsOrdered(@PathVariable Long busId) {
+        return conteoBoletosService.findLast7DaysRecordsOrdered(busId);
+    }
+
+    @GetMapping("/last-month-ordered/{busId}")
+    public List<Map<String, Object>> getRecordsInCurrentMonth(@PathVariable Long busId) {
+        return conteoBoletosService.findRecordsInCurrentMonth(busId);
     }
 
     @GetMapping("/conteoPorBusYFechaActual/{bus}")

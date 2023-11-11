@@ -7,11 +7,12 @@ import jakarta.persistence.TypedQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import java.time.LocalDate;
+import java.time.YearMonth;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,6 +29,118 @@ public class ConteoBoletosService {
     public Optional<ConteoBoletosModel> getById(Long id){
         return conteoBoletosRepository.findById(id);
     }
+
+    public List<ConteoBoletosModel> findLast7DaysRecords() {
+        LocalDate today = LocalDate.now();  // Obtener la fecha actual
+
+        // Calcular la fecha hace 7 días
+        LocalDate oneWeekAgo = today.minusDays(7);
+
+        // Realizar la consulta JPA para buscar registros en los últimos 7 días
+        List<ConteoBoletosModel> records = entityManager.createQuery(
+                        "SELECT cb FROM ConteoBoletosModel cb WHERE cb.dia >= :oneWeekAgo AND cb.dia <= :today",
+                        ConteoBoletosModel.class
+                )
+                .setParameter("oneWeekAgo", oneWeekAgo)
+                .setParameter("today", today)
+                .getResultList();
+
+        return records;
+    }
+
+    public List<Map<String, Object>> findLast7DaysRecordsOrdered(Long busId) {
+        LocalDate today = LocalDate.now();
+        LocalDate sixDaysAgo = today.minusDays(6);
+
+        List<Object[]> resultList = entityManager.createQuery(
+                        "SELECT cb.dia, cb.busesModel.placa, cb.boletosModel.nombre, cb.boletosModel.valor, SUM(cb.conteo), SUM(cb.totalAcumulado) " +
+                                "FROM ConteoBoletosModel cb " +
+                                "WHERE cb.dia >= :sixDaysAgo AND cb.dia <= :today " +
+                                "AND cb.busesModel.id = :busId " +  // Agregamos la condición para el ID del vehículo
+                                "GROUP BY cb.dia, cb.busesModel.placa, cb.boletosModel.nombre, cb.boletosModel.valor",
+                        Object[].class
+                )
+                .setParameter("sixDaysAgo", sixDaysAgo)
+                .setParameter("today", today)
+                .setParameter("busId", busId)  // Pasamos el parámetro del ID del vehículo
+                .getResultList();
+
+        List<Map<String, Object>> responseList = new ArrayList<>();
+
+        for (Object[] result : resultList) {
+            LocalDate dia = (LocalDate) result[0];
+            String placa = (String) result[1];
+            String nombreBoleto = (String) result[2];
+            String valorBoleto = (String) result[3];
+            Long conteo = (Long) result[4];
+            Double totalAcumulado = (Double) result[5];
+
+            // Create a map for the response structure
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("dia", new int[]{dia.getYear(), dia.getMonthValue(), dia.getDayOfMonth()});
+            response.put("placa", placa);
+
+            Map<String, Object> servicio = new LinkedHashMap<>();
+            servicio.put("nombre", nombreBoleto);
+            servicio.put("valor", valorBoleto);
+            servicio.put("conteo", conteo);
+            servicio.put("totalAcumulado", totalAcumulado);
+
+            response.put("servicios", Collections.singletonList(servicio));
+
+            responseList.add(response);
+        }
+
+        return responseList;
+    }
+
+    public List<Map<String, Object>> findRecordsInCurrentMonth(Long busId) {
+        YearMonth currentYearMonth = YearMonth.now();
+        LocalDate firstDayOfMonth = currentYearMonth.atDay(1);
+        LocalDate lastDayOfMonth = currentYearMonth.atEndOfMonth();
+
+        List<Object[]> resultList = entityManager.createQuery(
+                        "SELECT cb.dia, cb.busesModel.placa, cb.boletosModel.nombre, cb.boletosModel.valor, SUM(cb.conteo), SUM(cb.totalAcumulado) " +
+                                "FROM ConteoBoletosModel cb " +
+                                "WHERE cb.dia >= :firstDayOfMonth AND cb.dia <= :lastDayOfMonth " +
+                                "AND cb.busesModel.id = :busId " +  // Agregamos la condición para el ID del vehículo
+                                "GROUP BY cb.dia, cb.busesModel.placa, cb.boletosModel.nombre, cb.boletosModel.valor",
+                        Object[].class
+                )
+                .setParameter("firstDayOfMonth", firstDayOfMonth)
+                .setParameter("lastDayOfMonth", lastDayOfMonth)
+                .setParameter("busId", busId)  // Pasamos el parámetro del ID del vehículo
+                .getResultList();
+
+        List<Map<String, Object>> responseList = new ArrayList<>();
+
+        for (Object[] result : resultList) {
+            LocalDate dia = (LocalDate) result[0];
+            String placa = (String) result[1];
+            String nombreBoleto = (String) result[2];
+            String valorBoleto = (String) result[3];
+            Long conteo = (Long) result[4];
+            Double totalAcumulado = (Double) result[5];
+
+            // Create a map for the response structure
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("dia", new int[]{dia.getYear(), dia.getMonthValue(), dia.getDayOfMonth()});
+            response.put("placa", placa);
+
+            Map<String, Object> servicio = new LinkedHashMap<>();
+            servicio.put("nombre", nombreBoleto);
+            servicio.put("valor", valorBoleto);
+            servicio.put("conteo", conteo);
+            servicio.put("totalAcumulado", totalAcumulado);
+
+            response.put("servicios", Collections.singletonList(servicio));
+
+            responseList.add(response);
+        }
+
+        return responseList;
+    }
+
 
     public List<ConteoBoletosModel> obtenerConteoPorBusIdYFechaActual(Long busId) {
         LocalDate fechaActualPeru = obtenerFechaActualPeru();
