@@ -23,6 +23,7 @@ public class BusesModel {
 
     @Column(precision = 20, scale = 15)
     private BigDecimal  latitud;
+
     private Boolean estado;
 
     @ManyToOne
